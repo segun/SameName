@@ -21,6 +21,8 @@ public class SameName {
         //remove spaces
         //remove vowels        
         //score each consonant.
+        name1 = name1.toLowerCase();
+        name2 = name2.toLowerCase();
         int n1Score = score(removeVowels(removeSpaces(name1)));
         System.err.println("N1: " + n1Score);
         int n2Score = score(removeVowels(removeSpaces(name2)));
@@ -31,11 +33,13 @@ public class SameName {
     
     public static boolean isSameName(String name1, String name2, int confidence) {
         Map<String, Integer> result = getScores(name1, name2);
-        System.err.println(result);
+        System.out.println(result);
         return result.get("confidence") >= confidence;
     }    
     
     public static Map<String, Integer> getScores(String name1, String name2) {
+        name1 = name1.toLowerCase();
+        name2 = name2.toLowerCase();        
         Map<String, Integer> result = new HashMap<>();
         int n1Score = score(removeVowels(removeSpaces(name1)));
         System.err.println("N1: " + n1Score);

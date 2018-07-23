@@ -5,6 +5,9 @@
  */
 package com.idempotent.utils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -49,6 +52,19 @@ public class SameNameTest {
         boolean expResult = true;
         boolean result = SameName.isSameName(name1, name2);
         assertEquals(expResult, result);
+    }
+    
+    @Test
+    public void testFromFile() throws IOException {
+        System.out.println("testFromFile");
+        String fileName = "/Trash/names";
+         Files.lines(Paths.get(fileName)).forEach(x -> {
+             String[] tokens = x.split(":");
+             String n1 = tokens[0];
+             String n2 = tokens[1];
+             int c = Integer.parseInt(tokens[2]);
+             SameName.isSameName(n1, n2, c);
+         });
     }
 
     @Test
