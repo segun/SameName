@@ -7,7 +7,9 @@ package com.idempotent.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -25,6 +27,33 @@ public class SameName {
         System.err.println("N2: " + n2Score);
         
         return n1Score == n2Score;
+    }
+    
+    public static boolean isSameName(String name1, String name2, int confidence) {
+        Map<String, Integer> result = getScores(name1, name2);
+        System.err.println(result);
+        return result.get("confidence") >= confidence;
+    }    
+    
+    public static Map<String, Integer> getScores(String name1, String name2) {
+        Map<String, Integer> result = new HashMap<>();
+        int n1Score = score(removeVowels(removeSpaces(name1)));
+        System.err.println("N1: " + n1Score);
+        int n2Score = score(removeVowels(removeSpaces(name2)));
+        System.err.println("N2: " + n2Score);
+        
+        result.put(name1, n1Score);
+        result.put(name2, n2Score);
+        
+        int max = n1Score;
+        max = max < n2Score ? n2Score : max;
+        
+        double confidence = (n2Score * 1.0/n1Score) * 100;
+        if(max == n2Score) {
+            confidence = (n1Score * 1.0/n2Score) * 100;
+        }
+        result.put("confidence", (int) Math.round(confidence));
+        return result;
     }
 
     public static int score(String name) {
